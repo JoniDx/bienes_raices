@@ -6,7 +6,11 @@
   
     <main class="contenedor seccion">
         <h2>Casas y Depas en Venta</h2>
-        <div class="contenedor-anuncios">
+        <?php
+            $limite = 10;
+            include 'includes/templates/anuncios.php';
+        ?>
+        <!-- <div class="contenedor-anuncios">
             <div class="anuncio">
                 <picture>
                     <source srcset="build/img/anuncio1.webp" type="image/webp">
@@ -186,7 +190,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </main>
 
 <?php 
