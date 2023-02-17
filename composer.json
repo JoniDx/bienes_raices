@@ -1,0 +1,17 @@
+{
+    "name": "cband/bienes_raices",
+    "description": "proyecto Bienes Raices POO",
+    "type": "project",
+    "authors": [
+        {
+            "name": "CarlosBanda",
+            "email": "c.banda07@hotmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    }
+}
