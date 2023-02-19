@@ -3,6 +3,7 @@
     require '../../includes/app.php';
 
     use App\Propiedad;
+    use Intervention\Image\ImageManagerStatic as Image;
 
     estaAutenticado();
 
@@ -14,7 +15,7 @@
     $resultado = mysqli_query($db, $consulta);
 
     // Arreglo con mensajes de errores
-    $errores = [];
+    $errores = Propiedad::getErrores();
 
     $titulo = '';
     $precio = '';
@@ -28,89 +29,40 @@
 
         $propiedad = new Propiedad($_POST);
 
-        $propiedad->guardar();
 
-        $titulo = mysqli_real_escape_string( $db, $_POST['titulo'] );
-        $precio = mysqli_real_escape_string( $db, $_POST['precio'] );
-        $descripcion = mysqli_real_escape_string( $db, $_POST['descripcion'] );
-        $habitaciones = mysqli_real_escape_string( $db, $_POST['habitaciones'] );
-        $wc = mysqli_real_escape_string( $db, $_POST['wc'] );
-        $estacionamiento = mysqli_real_escape_string( $db, $_POST['estacionamiento'] );
-        $vendedorId = mysqli_real_escape_string( $db, $_POST['vendedor'] );
-        $creado = date('y/m/d');
+        /** SUBIDA DE ARCHIVOS **/
 
-        // Asignar files hacia una variable
-        $imagen = $_FILES['imagen'];
-
-        if(!$titulo){
-            $errores[] = "Debes añadir un titulo";
+        //Define la extensión para el archivo
+        if ($imagen['type'] === 'image/jpeg') {
+            $exten = '.jpg';
+        }else if($imagen['type'] === 'image/jpg'){
+            $exten = '.jpg';
+        } else{
+            $exten = '.png';
         }
 
-        if(!$precio){
-            $errores[] = "El precio es Obligatorio";
+        // Generar un nombre unico
+        $nombreImagen = md5( uniqid('')). $exten;
+
+        if($_FILES['imagen']['tmp_name']){
+            // $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+            $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+            $propiedad->setImagen($nombreImagen);
         }
 
-        if(strlen( $descripcion ) < 50 ){
-            $errores[] = "La descripción es obligatoria y debe tener al menos 50 caracteres";
-        }
-
-        if(!$habitaciones){
-            $errores[] = "El número de habitaciones es obligatorio";
-        }
-
-        if(!$wc){
-            $errores[] = "El número de baños es obligatorio";
-        }
-
-        if(!$estacionamiento){
-            $errores[] = "El número de lugares de estacionamiento es obligatorio";
-        }
-
-        if(!$vendedorId){
-            $errores[] = "Elige un vendedor";
-        }
-
-        if(!$imagen['name'] || $imagen['error']){
-            $errores[] = "La imagen es obligatoria";
-        }
-
-        //Validar tamaño de imagen 1mb máximo
-        $media = 1000 * 1000;
-
-        if($imagen['size'] > $media) {
-            $errores[] = 'La imagen es muy pesada';
-        }
+        $errores = $propiedad->validar();
 
         if(empty($errores)){
-
-            /** SUBIDA DE ARCHIVOS **/
-
-            // Creamos la carpeta
-            $carpetaImagenes = '../../imagenes/';
-
-            if(!is_dir($carpetaImagenes)) {
-                mkdir($carpetaImagenes);
+            //Crear la carpeta para subir la imagen
+            if(!is_dir(CARPETA_IMAGENES)) {
+                mkdir(CARPETA_IMAGENES);
             }
 
-            //Define la extensión para el archivo
-            if ($imagen['type'] === 'image/jpeg') {
-                $exten = '.jpg';
-            }else if($imagen['type'] === 'image/jpg'){
-                $exten = '.jpg';
-            } else{
-                $exten = '.png';
-            }
+            //Guardar la imagen
+            $image->save(CARPETA_IMAGENES . $nombreImagen);
 
-            // Generar un nombre unico
-            $nombreImagen = md5( uniqid('')). $exten;
-
-            //Subir la imagen
-            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-
-
-
-            $resultado = mysqli_query($db, $query);
-        
+            //Guardar la imagen en la base de datos
+            $resultado = $propiedad->guardar();
 
             if($resultado){
             //echo "Insertado Correctamente";

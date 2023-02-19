@@ -1,11 +1,12 @@
 <?php 
 
-    require '../../includes/funciones.php';
+    require '../../includes/app.php';
+
     $auth = estaAutenticado();
 
-    if(!$auth){
-        header('Location: /bienes_raices');
-    }
+    // if(!$auth){
+    //     header('Location: /bienes_raices');
+    // }
 
     $id = $_GET['id'];
     $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -15,7 +16,7 @@
     }
 
     // Base de datos
-    require '../../includes/config/database.php';
+    // require '../../includes/config/database.php';
     $db = conectarDB();
 
     //Consulta para obtener los vendedores

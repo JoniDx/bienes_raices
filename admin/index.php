@@ -1,14 +1,15 @@
 <?php 
 
-    require '../includes/funciones.php';
-    $auth = estaAutenticado();
+    require '../includes/app.php';
 
-    if(!$auth){
-        header('Location: /bienes_raices');
-    }
+    estaAutenticado();
+
+    // if(!$auth){
+    //     header('Location: /bienes_raices');
+    // }
 
     // Importar la conexión
-    require '../includes/config/database.php';
+    // require '../includes/config/database.php';
     $db = conectarDB();
 
     // Escribir el Query
