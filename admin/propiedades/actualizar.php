@@ -46,7 +46,7 @@
         $args = $_POST['propiedad'];
 
         $propiedad->sincronizar($args);
-        // debuguear($propiedad);
+        debuguear($propiedad);
 
         // $titulo = mysqli_real_escape_string( $db, $_POST['titulo'] );
         // $precio = mysqli_real_escape_string( $db, $_POST['precio'] );
