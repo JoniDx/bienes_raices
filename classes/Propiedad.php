@@ -35,7 +35,8 @@ class Propiedad{
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
-        $this->vendedores_id = $args['vendedores_id'] ?? '';
+        $this->vendedores_id = 1;
+        // $this->vendedores_id = $args['vendedores_id'] ?? '';
     }
 
     public function guardar(){
@@ -132,6 +133,15 @@ class Propiedad{
         return $resultado;
     }
 
+    // Buscar un registro por su id
+    public static function find($id){
+        $query = "SELECT * FROM propiedades WHERE id = ${id}";
+
+        $resultado = self::consultarSQL($query);
+
+        return array_shift($resultado);
+    }
+
     public static function consultarSQL($query){
         // Consultar la base de datos
         $resultado = self::$db->query($query);
@@ -158,6 +168,14 @@ class Propiedad{
             }
         }
         return $objeto;
+    }
+
+    public function sincronizar( $args = []){
+        foreach($args as $key => $value){
+            if(property_exists($this, $key) && !is_null($value)){
+                $this->$key = $value;
+            }
+        }
     }
 
 }

@@ -21,7 +21,7 @@
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-        $propiedad = new Propiedad($_POST);
+        $propiedad = new Propiedad($_POST['propiedad']);
 
 
         /** SUBIDA DE ARCHIVOS **/
@@ -39,9 +39,9 @@
         // $nombreImagen = md5( uniqid('')). $exten;
         $nombreImagen = md5( uniqid('')). '.jpg';
 
-        if($_FILES['imagen']['tmp_name']){
+        if($_FILES['propiedad']['tmp_name']['imagen']){
             // $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
-            $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+            $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
             $propiedad->setImagen($nombreImagen);
             
         }
