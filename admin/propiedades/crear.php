@@ -3,18 +3,15 @@
     require '../../includes/app.php';
 
     use App\Propiedad;
+    use App\Vendedor;
     use Intervention\Image\ImageManagerStatic as Image;
 
     estaAutenticado();
 
-    // Base de datos
-    $db = conectarDB();
-
     $propiedad = new Propiedad;
 
-    // Consulta para obtener los vendedores
-    $consulta = "SELECT * FROM vendedores";
-    $resultado = mysqli_query($db, $consulta);
+    //Consulta para obtener todo losvendedores
+    $vendedores = Vendedor::all();
 
     // Arreglo con mensajes de errores
     $errores = Propiedad::getErrores();
@@ -56,14 +53,9 @@
             $image->save(CARPETA_IMAGENES . $nombreImagen);
 
             //Guardar la imagen en la base de datos
-            $resultado = $propiedad->guardar();
+            $propiedad->guardar();
 
-            if($resultado){
-            //echo "Insertado Correctamente";
 
-            // Redireccionar al usuario
-            header('location: /bienes_raices/admin?resultado=1');
-}
         }
     }
     
