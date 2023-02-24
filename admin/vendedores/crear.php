@@ -13,7 +13,14 @@
     $errores = Vendedor::getErrores();
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        $vendedor =  new Vendedor($_POST['vendedor']);
 
+        $errores = $vendedor->validar();
+
+        //No hay errores
+        if(empty($errores)){
+            $vendedor->guardar();
+        }
     }   
 
     incluirTemplate('header');
