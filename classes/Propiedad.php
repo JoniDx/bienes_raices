@@ -4,10 +4,11 @@ namespace App;
 
 class Propiedad extends ActiveRecord{
     protected static $tabla = 'propiedades';
-    protected static $columnasDB = ['id','titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
+    protected static $columnasDB = ['id','titulo', 'tipo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
 
     public $id;
     public $titulo;
+    public $tipo;
     public $precio;
     public $imagen;
     public $descripcion;
@@ -21,6 +22,7 @@ class Propiedad extends ActiveRecord{
     {
         $this->id = $args['id'] ?? null;
         $this->titulo = $args['titulo'] ?? '';
+        $this->tipo = $args['tipo'] ?? '';
         $this->precio = $args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
         $this->descripcion = $args['descripcion'] ?? '';

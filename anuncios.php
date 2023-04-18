@@ -3,13 +3,33 @@
     
     incluirTemplate('header');
 ?>   
-  
+    <style>
+        .container_buttons{
+            display: flex;
+            margin: 2rem;
+            justify-content: end;
+            gap: 1rem;
+        }
+        .container_buttons a{
+            background: #e08709;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+    </style>
+
     <main class="contenedor seccion">
-        <h2>Casas y Depas en Venta</h2>
+        <h2>Casas y Depas</h2>
+
+        <div class="container_buttons">
+            <a href="anuncios.php?type=venta" class="">Filtrar por venta</a>
+            <a href="anuncios.php?type=renta" class="">Filtrar por renta</a>
+        </div>
+
         <?php
             $limite = 10;
             include 'includes/templates/anuncios.php';
         ?>
+
         <!-- <div class="contenedor-anuncios">
             <div class="anuncio">
                 <picture>

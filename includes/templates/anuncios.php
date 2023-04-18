@@ -1,21 +1,35 @@
 <?php
      use App\Propiedad;
-  
 
-     if($_SERVER['SCRIPT_NAME'] === '/bienes_raices/anuncios.php'){
+     if(isset($_GET['type'])) {
+          $query = "SELECT * FROM propiedades WHERE tipo = '".$_GET['type']."'";
+          $resultado = mysqli_query($db, $query);
+          $propiedades = [];
+          while($registro = $resultado->fetch_assoc()){
+              $objeto = new Propiedad;
+              foreach($registro as $key => $value){
+                  if(property_exists( $objeto, $key )){
+                      $objeto->$key = $value;
+                  }
+              }
+              $propiedades[] = $objeto;
+          }
+
+     }else {
           $propiedades = Propiedad::all();
-     } else{
-          $propiedades = Propiedad::get(3);
      }
+
 ?>
 <div class="contenedor-anuncios">
-     <?php foreach($propiedades as $propiedad) { ?>
+     <?php foreach($propiedades as $propiedad) {?>
+     
           <div class="anuncio">
                <picture>
                     <img loading="lazy" src="/bienes_raices/imagenes/<?php echo $propiedad->imagen; ?>" alt="anuncio">
                </picture>
                <div class="contenido-anuncio">
                     <h3><?php echo $propiedad->titulo; ?></h3>
+                    <!-- <h3><?php echo $propiedad->tipo; ?></h3> -->
                     <p><?php echo $propiedad->descripcion; ?></p>
                     <p class="precio"><?php echo $propiedad->precio; ?></p>
                     <ul class="iconos-caracteristicas">
